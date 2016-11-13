@@ -1,0 +1,316 @@
+<!DOCTYPE>
+<html>
+<head>
+<title>新标签页</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="css/animation.css" type="text/css"/>
+<link rel="stylesheet" href="css/style.css" type="text/css"/>
+<link rel="stylesheet" href="css/loading.css" type="text/css"/>
+<link rel="stylesheet" href="css/index.css" type="text/css"/>
+<link rel="stylesheet" href="css/change.css" type="text/css"/>
+<link rel="stylesheet" href="css/search.css" type="text/css"/>
+<link rel="stylesheet" href="css/infinity.css" type="text/css"/>
+<link rel="stylesheet" href="css/rightbar.css" type="text/css"/>
+<link rel="stylesheet" href="css/music.css" type="text/css"/>
+</head>
+<body ng-controller="bodyCtrl" ng-click="body($target)">
+<!-- 加载动画 -->
+<div class="loading-bg centered" id="loadingBg">
+	<div class="loading-main">
+		<div class="loading-title centered" id="loadingTitle">0%</div>
+		<div class="loading-action">
+			<div class="loading-ing" id="loadingWidth"></div>
+		</div>
+	</div>
+</div>
+<!-- 背景图 -->
+<div class="background-img" id="backgroundImg"></div>
+<!-- 右下角小风车 -->
+<div class="fengche">
+	<div class="fengche-main" id="fengche" title="点击换张壁纸"></div>
+	<div class="fengche-gan"></div>
+</div>
+<!-- 左下角音乐播放器按钮 -->
+<!-- <div class="music-bofangqi" id="musicButton">
+	<div class="music-icon"></div>
+</div> -->
+<!-- 播放器 -->
+<div class="bofangqi" id="bofangqi" ng-controller="musicCtrl" ng-init="flag1=true;">
+	<!-- 播放器 -->
+	<audio ng-src="{{sce('http://link.hhtjim.com/163/'+nowList.id+'.mp3')}}" id="audio"></audio>
+	<!-- 控制面板开始 -->
+	<div class="m_player" role="application">
+	    <!-- 主面板开始 -->
+	    <div class="m_player_dock">
+	        <div class="music_info">
+	            <a target="_blank" class="album_pic">
+	            	<img ng-src={{nowList.album.picUrl}} title="{{nowList.artists[0].name}}-{{nowList.name}}" />
+	            </a>
+	            <div class="music_info_main">
+	                <p class="music_name" title="{{nowList.name}}"><span>{{nowList.name}}</span></p>
+	                <p class="singer_name" title="{{nowList.artists[0].name}}"><span>{{nowList.artists[0].name}}</span></p>
+	            </div>
+	        </div>
+	    </div>
+	    <!-- 主面板结束 -->
+	    <!-- 控制器开始 -->
+	    <div class="bar_op">
+	        <strong title="上一首( [ )" class="prev_bt" ng-click="prev()"></strong>
+	        <!-- 播放 -->
+	        <strong title="播放" class="play_bt" ng-show="isPlay()" ng-click="play()"></strong>
+	        <!-- 暂停 -->
+	        <strong title="暂停" class="pause_bt" ng-show="!isPlay()" ng-click="pause()"></strong>
+	        <strong title="下一首( ] )" class="next_bt" ng-click="next()"></strong>
+	        <strong title="列表循环" class="cycle_bt" id="btnPlayway"></strong>
+	        <div class="volume">
+	            <span class="volume_icon" id="spanmute"></span>
+	            <div class="nstSlider-three" id="sliderDivThree">
+				    <div class="bar-three" id="sliderBarThree"></div>
+				    <div class="leftGrip-three" id="sliderGripThree"></div>
+				</div>
+	        </div>
+	    </div>
+	    <!-- 控制器结束 -->
+	    <span title="展开播放列表" class="open_list" ng-click="flag1=false;"><span>{{musicList.length}}</span></span>
+		<!-- 列表 -->
+	    <div class="play_list_frame" ng-hide="flag1">
+	    	<!-- top title -->
+	        <div class="play_list_title">
+	            <ul id="tab_container" style="width:270px;">
+	                <li class="current"><a>播放列表</a><i></i></li>
+	                <li><a>搜索音乐</a></li>
+	            </ul>
+	            <span id="clear_list" class="clear_list" ng-click="clearList();">清空列表</span>
+	            <strong title="收起播放列表" class="close_list" ng-click="flag1=true;"></strong>
+	        </div>
+	        <!-- 播放列表 -->
+	        <div class="play_list">
+	            <!-- 列表为空提示_S -->
+	            <div class="play_list_point" id="divnulllist" ng-show="!musicList[0]">
+	                <div>
+	                    <h4>您当前还未添加任何歌曲，赶快去搜索音乐添加吧</h4>
+	                </div>
+	            </div>
+	            <!-- 列表 -->
+	            <div class="music_list_repeat" ng-repeat="x in musicList track by x.id" ng-dblclick='playmusic(x)'>
+					<span class="live_place"><span class="live_icon"></span></span>{{$index+1}} {{x.artists[0].name}}-{{x.name}}
+					<span class="right_span" ng-click="removeList(x)"></span>
+	            </div>
+	        </div>
+	        <!-- 搜索列表 -->
+	        <div class="search_list">
+	            <!-- 搜索框 -->
+	            <div class="m_search_div">
+	                <input type="text" placeholder="单曲/歌手/专辑/歌单/MV/用户" ng-keydown="keydown($event)" ng-model="searchValue" />
+	                <span ng-click='toSearch();'></span>
+	            </div>
+	            <!-- 渲染搜索信息 -->
+	            <div class="m_search_info">
+	                <li class="m_search_info_title"><span>歌曲</span><span>歌手</span><span>专辑</span></li>
+	                <div class="m_search_scroll">
+			            <li class='m_search_info_title' ng-repeat='x in searchList' ng-dblclick='dbplay(x)'>
+			                <span title={{x.name}}>{{x.name}}</span>
+			                <span title={{x.artists[0].name}}>{{x.artists[0].name}}</span>
+			                <span title={{x.album.name}}>{{x.album.name}}</span>
+			                <span ng-click='addList(x)'></span>
+			            </li>				
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    <!-- 进度控制 -->
+	    <div class="m_player_jindu">
+			<span class="jindu_left lefted" ng-bind="nowTime()"></span>
+            <div class="jindu_slider" id="sliderDivFour">
+			    <div class="jindu_bar" id="sliderBarFour"></div>
+			    <div class="jindu_grip" id="sliderGripFour"></div>
+			</div>			
+			<span class="jindu_right righted" ng-bind="totleTime()"></span>
+	    </div>
+	</div>
+	<!-- 关闭播放器 -->
+	<div class="bofangqi-close" id="bofangqiClose">×</div>
+</div>
+<!-- 左上角更新按钮 -->
+<div class="update" id="updateImg" title="更新说明"></div>
+<!-- 更新说明 -->
+<div class="update-bg" id="bg">
+	<div class="update-div">
+		<div class="update-div-top">更新说明</div>
+		<span id="close" class="update-div-span">×</span>
+		<div class="update-div-main">
+			<p class="centered">2016-09-24</p>
+			1、标签增加至两页20个<br />
+			2、左下角增加音乐功能(由于网易云的原因，可能有时候播放不了)<br />
+			<p class="centered">2016-09-02</p>
+			1、优化一些不兼容情况<br />
+			2、增加google搜索功能<br />
+			<p class="centered">2016-08-20</p>
+			1、增加启动动画，等待http请求加载完后进入主页<br />
+			<p class="centered">2016-07-23</p>
+			1、第一次访问弹出更新说明<br />
+			2、增加标签推荐和过滤功能，angular路由、过滤器和指令实现<br />
+			3、禁用右键菜单，右键点击实现修改和删除功能<br />
+			4、增加修改标签修改功能<br />
+			<p class="centered">2016-07-14</p>
+			1、新增H5本地存储标签数据，新增或删除标签和改变标签圆角和透明度操作保存数据在本地，使得再次刷新原操作保留。
+			<p class="centered">2016-07-02</p>
+			1、点击小风车旋转更换背景图<br />
+			2、点击右上方按钮滑出操作栏<br />
+			3、自定义添加标签，输入网址、名称和选择背景颜色<br />
+			4、设置图标不透明度、图标圆角度数和文字颜色<br />
+			5、实现百度搜索和切换搜索内容<br />
+			6、移动标签位置和删除标签<br />
+			7、添加了更新说明<br />
+		</div>
+	</div>
+</div>
+<!-- 修改标签 -->
+<div class="change-bg" ng-controller="changeCtrl" ng-hide="data.change_flag" ng-init="data.change_flag=true" ng-click="targetClick($event);">
+	<div class="change-biaoqian">
+		<h1 class="centered">修改标签</h1>
+		<form ng-submit="changeBiaoqian()">
+			<input type="url" placeholder="网址" ng-model="data.change_address" autofocus required />
+			<input type="text" placeholder="名称" ng-model="data.change_name" maxlength="6" required />
+			<button type="submit">确认修改</button>
+		</form>
+	</div>
+</div>
+<!-- 主体 -->
+<div class="main">
+	<!-- 搜索栏 -->
+	<div class="main-top" ng-controller="searchCtrl">
+		<!-- 搜索选项 -->
+		<div class="search-bar">
+			<ul>
+				<li ng-repeat='x in searchTypeList' ng-click="changeType($index)" ng-class="{'search-bar-focus':$index==typeNum}" ng-style="{color:rootColor.color}" ng-bind="x.title"></li>
+			</ul>
+		</div>
+		<!-- 搜索框 -->
+		<div class="search-input">
+			<div class="lefted search-input-left" ng-style="style">
+				<!-- 搜索引擎选择 -->
+				<div class="search-select">
+					<div class="search-select-arrow"></div>
+					<li class="search-select-li" ng-click="changeSearch(1)" ng-class="{'search-select-li-hover':searchNum==1}">百度</li>
+					<li class="search-select-li" ng-click="changeSearch(2)" ng-class="{'search-select-li-hover':searchNum==2}">Google</li>
+				</div>				
+			</div>
+			<input type="search" class="search-input-search" ng-keydown="keydown($event)" ng-model="inputStr" ng-focus="showFlag()" ng-blur="hideFlag()" ng-change="toSearchInfo()" placeholder="{{placeholder}}" />
+			<span class="righted search-input-right" ng-show="flag" ng-click="toSearch()"><span></span></span>
+		</div>
+		<!-- 搜索信息 -->
+		<div class="search-info" ng-show="flag">
+			<li ng-repeat="x in searchInfoList | limitTo:6" class="search-info-li" ng-class="{'search-info-li-target':$index+1==num}" ng-bind="x" ng-click="toSearch(x);"></li>
+		</div>
+	</div>
+	<!-- 标签 -->
+	<div class="main-center" ng-controller="infinityCtrl">
+		<ul class="infinity-ul">
+			<!-- <infinity-li></infinity-li> -->
+			<li ng-repeat='x in todoList track by $index' class='infinity-li' ng-right-click='rightClick($index)' 
+			ng-class="{'infinity-li-rotate':num==$index}">
+				<a href='{{x.add}}' target='_blank' class="infinity-a">
+					<div class='infinity-a-logo centered' ng-style='{background:x.color}' ng-bind="x.title"></div>
+					<div class='infinity-a-wenzi centered' ng-bind='x.wenZi' ng-style="{color:rootColor.color}"></div>
+				</a>
+				<div class='infinity-edit' ng-click='editBiaoqian(x,$index)' title='编辑标签' ng-show='liNum==$index'></div>
+				<div class='infinity-remove' ng-click='removeBiaoqian(x)' title='删除标签' ng-show='liNum==$index' ng-mouseover='num=$index' ng-mouseout='num=-1'></div>
+			</li>			
+		</ul>
+	</div>
+	<!-- 分页按钮 -->
+	<div class="main-bottom">
+		<ul class="main-bottom-ul centered">
+			<li class="main-bottom-li main-bottom-li-on"></li>
+			<li class="main-bottom-li"></li>
+		</ul>
+	</div>
+</div>
+<!-- 右上角功能按钮 -->
+<div class="add-button" id="addButton"></div>
+<!-- 侧边栏 -->
+<div class="rightbar border-box" id="rightBar" ng-controller="rightbarCtrl" ng-init="target1=1;target2=1;">
+	<div class="rightbar-top border-box">
+		<span class="rightbar-top-choose" ng-click="target1=1" ng-class="{'rightbar-top-choose-on':target1==1}">添加项目</span>
+		<span class="rightbar-top-choose" ng-click="target1=2" ng-class="{'rightbar-top-choose-on':target1==2}">设置</span>
+	</div>
+	<!-- 添加项目 -->
+	<div class="rightbar-project" ng-show="target1==1">
+		<div class="rightbar-project-bar border-box">
+			<span class="rightbar-project-bar-span lefted" ng-class="{'rightbar-project-bar-spanon':target2==1}" ng-click="target2=1">推荐</span>
+			<span class="rightbar-project-bar-span righted" ng-class="{'rightbar-project-bar-spanon':target2==2}" ng-click="target2=2">自定义</span>
+		</div>
+		<!-- 推荐 -->
+		<div class="rightbar-tj" ng-show="target2==1">
+			<!-- 过滤 -->
+			<div class="rightbar-tj-filter">
+				<input type="search" class="rightbar-tj-filter-input" placeholder="搜索项目" maxlength="10" ng-model="searchString" />
+			</div>
+			<div class="rightbar-tj-main">
+				<!-- 左边导航 -->
+				<div class="rightbar-tj-leftbar">
+					<a class="rightbar-tj-leftbar-a" ng-repeat='x in routeHashList' href="{{x.href}}" ng-click="link($index);" ng-class="{'rightbar-tj-leftbar-aon':$index==num}" ng-bind="x.title"></a>
+				</div>
+				<!-- 右边路由 -->
+				<div class="rightbar-tj-rightbar" ng-view></div>
+			</div>
+		</div>
+		<!-- 自定义 -->
+		<div class="rightbar-diy" ng-show="target2==2">
+			<form ng-submit="addBiaoqian()">
+				<input type="url" class="rightbar-diy-input" placeholder="网址" ng-model="address" autofocus required />
+				<input type="text" class="rightbar-diy-input" placeholder="名称" ng-model="name" maxlength="6" required />
+				<div class="rightbar-diy-choose">
+					<div class="rightbar-diy-choose-yulan" ng-style="{backgroundColor: yulanColor}"></div>
+					<p class="rightbar-diy-choose-p centered">选择颜色</p>
+					<div class="rightbar-diy-choose-color">
+						<div class="rightbar-diy-choose-wai" ng-repeat="x in chooseColor" ng-style="{backgroundColor: x}" ng-class="{'rightbar-diy-choose-focus':$index==colorNum}" ng-click="selectColor($index,x)">
+							<div class="rightbar-diy-choose-zhong">
+								<div class="rightbar-diy-choose-li" ng-style="{backgroundColor: x}"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<button type="submit" class="rightbar-diy-submit">添加项目</button>
+			</form>
+		</div>
+	</div>
+	<!-- 设置 -->
+	<div class="rightbar-setting" ng-show="target1==2">
+		<div class="rightbar-setting-bar border-box centered">常规</div>
+		<div class="rightbar-setting-main">
+			<div class="rightbar-setting-tmd">
+				<div class="rightbar-setting-title">
+					<span class="lefted rightbar-setting-title-span">图标不透明度</span><span class="righted rightbar-setting-title-span">26%</span>
+				</div>
+				<div class="rightbar-setting-slider">
+				    <div class="rightbar-setting-leftbar"></div>
+				    <div class="rightbar-setting-grip"></div>
+				</div>
+			</div>
+			<div class="rightbar-setting-yuanjiao">
+				<div class="rightbar-setting-title">
+					<span class="lefted rightbar-setting-title-span">图标圆角度数</span><span class="righted rightbar-setting-title-span">26%</span>
+				</div>
+				<div class="rightbar-setting-slider">
+				    <div class="rightbar-setting-leftbar"></div>
+				    <div class="rightbar-setting-grip"></div>
+				</div>					
+			</div>
+			<div class="rightbar-setting-color">
+				<div class="centered rightbar-setting-title-span">设置字体颜色</div>
+				<div class="rightbar-setting-color-setting">
+					<div class="rightbar-diy-choose-wai" ng-repeat="x in setColorList" ng-style="{backgroundColor: x}" ng-class="{'rightbar-diy-choose-focus':$index==settingNum}" ng-click="settingColor(x,$index)">
+						<div class="rightbar-diy-choose-zhong">
+							<div class="rightbar-diy-choose-li" ng-style="{backgroundColor: x}"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="js/libs/require.min.js" data-main="js/main"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>TT</title>
+	<!-- jQuery文件。 -->
+	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="http://apps.bdimg.com/libs/angular.js/1.3.9/angular.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/tt.css">
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+
+<!-- 播放器 -->
+<div class="bofangqi" id="bofangqi">
+	<!-- 播放器 -->
+	<audio ng-src="{{sce('http://link.hhtjim.com/163/'+nowList.id+'.mp3')}}" id="audio"></audio>
+	<!-- 控制面板开始 -->
+	<div class="m_player" id="divplayer" role="application" onselectstart="return false" style="left: 0px;">
+	    <!-- 主面板开始 -->
+	    <div class="m_player_dock" id="divsongframe">
+	        <div class="music_info" id="divsonginfo">
+	            <a target="_blank" class="album_pic">
+	            	<img ng-src={{nowList.album.picUrl}} title="{{nowList.artists[0].name}}-{{nowList.name}}" />
+	            </a>
+	            <div class="music_info_main">
+	                <p class="music_name" title="{{nowList.name}}"><span>{{nowList.name}}</span></p>
+	                <p class="singer_name" title="{{nowList.artists[0].name}}"><span>{{nowList.artists[0].name}}</span></p>
+	            </div>
+	        </div>
+	    </div>
+	    <!-- 主面板结束 -->
+	    <!-- 控制器开始 -->
+	    <div class="bar_op">
+	        <strong title="上一首( [ )" class="prev_bt" ng-click="prev()"></strong>
+	        <!-- 播放 -->
+	        <strong title="播放" class="play_bt" ng-show="isPlay()" ng-click="play()"></strong>
+	        <!-- 暂停 -->
+	        <strong title="暂停" class="pause_bt" ng-show="!isPlay()" ng-click="pause()"></strong>
+	        <strong title="下一首( ] )" class="next_bt" ng-click="next()"></strong>
+	        <strong title="列表循环" class="cycle_bt" id="btnPlayway"></strong>
+	        <div class="volume">
+	            <span class="volume_icon" id="spanmute"></span>
+	            <div class="nstSlider-three" id="sliderDivThree">
+				    <div class="bar-three" id="sliderBarThree"></div>
+				    <div class="leftGrip-three" id="sliderGripThree"></div>
+				</div>
+	        </div>
+	    </div>
+	    <!-- 控制器结束 -->
+	    <span class="active_tip" style="top:0px;display:none;"></span>
+	    <span title="展开播放列表" class="open_list" id="spansongnum1"><span>{{musicList.length}}</span></span>
+		<!-- 列表-->
+	    <div class="play_list_frame" id="divplayframe" style="">
+	    	<!-- top title -->
+	        <div class="play_list_title">
+	            <ul id="tab_container" style="width:270px;">
+	                <li class="current"><a>播放列表</a><i></i></li>
+	                <li><a>搜索音乐</a></li>
+	            </ul>
+	            <span id="clear_list" class="clear_list" ng-click="clearList();">清空列表</span>
+	            <strong title="收起播放列表" class="close_list" id="btnclose"></strong>
+	        </div>
+	        <!-- 播放列表 -->
+	        <div class="play_list" id="divlistmain">
+	            <!--列表为空提示_S-->
+	            <div class="play_list_point" id="divnulllist" ng-show="!musicList[0]">
+	                <div>
+	                    <h4>您当前还未添加任何歌曲，赶快去搜索音乐添加吧</h4>
+	                </div>
+	            </div>
+	            <!-- 列表 -->
+	            <div class="music_list_repeat" ng-repeat="x in musicList track by x.id" ng-dblclick='playmusic(x)'>
+					<span class="live_place"><span class="live_icon"></span></span>{{$index+1}} {{x.artists[0].name}}-{{x.name}}
+					<span class="right_span" ng-click="removeList(x)"></span>
+	            </div>
+	        </div>
+	        <!-- 搜索列表 -->
+	        <div class="search_list" id="searchList">
+	            <!-- 搜索框 -->
+	            <div class="m_search_div">
+	                <input type="text" placeholder="单曲/歌手/专辑/歌单/MV/用户" ng-keydown="keydown($event)" ng-model="searchValue" />
+	                <span ng-click='toSearch();'></span>
+	            </div>
+	            <!-- 渲染搜索信息 -->
+	            <div class="m_search_info">
+	                <li class="m_search_info_title"><span>歌曲</span><span>歌手</span><span>专辑</span></li>
+	                <div class="m_search_scroll">
+						<search-li></search-li>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    <!-- 进度控制		 -->
+	    <div class="m_player_jindu">
+			<span class="jindu_left" ng-bind="nowTime()"></span>
+            <div class="nstSlider-four" id="sliderDivFour">
+			    <div class="bar-four" id="sliderBarFour"></div>
+			    <div class="leftGrip-four" id="sliderGripFour"></div>
+			</div>			
+			<span class="jindu_right" ng-bind="totleTime()"></span>
+	    </div>
+	</div>
+</div>
+<script src="js/slider.js"></script>
+<script type="text/javascript" src="js/tt.js"></script>
+</body>
+</html>

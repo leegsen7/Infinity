@@ -1,0 +1,36 @@
+@charset "utf-8";
+
+/*初始化*/
+body{
+	padding:0;
+	margin:0;
+	overflow: hidden;
+	font-size: 16px;
+}
+ul{
+	list-style: none;
+	padding:0;
+	margin:0;
+}
+li{
+	list-style: none;
+}
+a{
+	color:#fff;
+	text-decoration: none;
+	font-size: 16px;
+}
+.centered{
+	text-align: center;
+}
+.lefted{
+	float: left;
+}
+.righted{
+	float: right;
+}
+.border-box{
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;	
+}
