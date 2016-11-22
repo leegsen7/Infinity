@@ -1,8 +1,8 @@
 var gulp = require('gulp');
-var cleancss = require('gulp-clean-css');
-var rename = require('gulp-rename');
-var imagemin = require('gulp-imagemin');
-var pngquant = require('imagemin-pngquant');
+// var cleancss = require('gulp-clean-css');
+// var rename = require('gulp-rename');
+// var imagemin = require('gulp-imagemin');
+// var pngquant = require('imagemin-pngquant');
 var browserSync = require('browser-sync').create();
 // 自动刷新
 gulp.task('browser-sync', function() {

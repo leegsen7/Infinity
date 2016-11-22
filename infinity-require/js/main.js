@@ -14,6 +14,8 @@ require.config({
 		'update':'dom/update',
 		'rightbar':'dom/rightbar',
 		'music':'dom/music',
+		'slider':'dom/slider',
+		'parabola':'dom/parabola',
 		// ctrl
 		'searchCtrl':'ctrls/searchCtrl',
 		'rightbarCtrl':'ctrls/rightbarCtrl',
@@ -27,6 +29,9 @@ require.config({
 		'ngRightClick':'directives/ngRightClick',
 		// filter
 		'filter':'filter/filter',
+		// factory
+		// 'json':'factory/json',
+		'service':'factory/service',
 	},
     shim:{
         "angular":{
@@ -40,6 +45,10 @@ require.config({
         'angular-animate':{
         	deps:['angular'],
         	exports:'angular-animate',
+        },
+        'parabola':{
+        	deps:['jquery'],
+        	exports:'parabola',
         }
     }	
 });
@@ -54,6 +63,7 @@ require([
 	'music',
 	'angular-route',
 	'service',
+	// 'json',
 	'infinityCtrl',
 	'ngRightClick',
 	'changeCtrl',

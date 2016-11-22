@@ -68,6 +68,10 @@ define(['app','storage'],function(app,storage){
 		}
 		$scope.num = 0;
 	    $scope.keydown = function($event){
+	    	// P和M键不响应
+	    	if ($event.keyCode == 80 || $event.keyCode == 77){
+	    		$event.stopPropagation();
+	    	}
 	    	// 回车搜索
 	        if ($event.keyCode == 13){
 	            $scope.toSearch();
@@ -116,5 +120,8 @@ define(['app','storage'],function(app,storage){
 	    $scope.showFlag = function(){
 	    	$scope.flag = true;
 	    }
+	    $scope.$on('giveFontColor',function(e,data){
+	    	$scope.fontColor = data;
+	    });
 	})
 });

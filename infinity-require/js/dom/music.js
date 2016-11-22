@@ -3,7 +3,7 @@ define(['jquery'],function($){
 		// 左下角音乐事件
 		$('#musicButton').click(function(){
 			$(this).hide();
-			$('#bofangqi').show().addClass('music-guodu');
+			$('#bofangqi').removeClass("hiddened").addClass('music-guodu');
 			setTimeout(function(){
 				$('#bofangqiClose').show();
 			},1000);
@@ -12,7 +12,7 @@ define(['jquery'],function($){
 			$(this).hide();
 			$('#bofangqi').removeClass('music-guodu').addClass('music-back');
 			setTimeout(function(){
-				$('#bofangqi').hide().removeClass('music-back');
+				$('#bofangqi').removeClass('music-back').addClass('hiddened');
 				$('#musicButton').show();
 			},1000);			
 		});		

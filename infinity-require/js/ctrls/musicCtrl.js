@@ -1,55 +1,102 @@
-define(['app','storage','slider'],function(app,storage,slider){
+define(function(require){
+	var app = require('app');
+	var storage = require('storage');
+	var $ = require('jquery');
+	var Slider = require('slider');
+	var Parabola = require('parabola');
+	var sliderJindu = new Slider('jinduSliderGrip','jinduSliderDiv','jinduSliderBar');
+	var sliderVolume = new Slider('volumeSliderGrip','volumeSliderDiv','volumeSliderBar');	
 	// 音乐控制器
-	app.controller('musicCtrl',function($scope,$http,$sce,$timeout,$interval){
-		var sliderJindu = new Slider('sliderGripFour','sliderDivFour','sliderBarFour');
-		sliderJindu.init(function(e){
-		    jindu(e);
-		})
-		// 歌曲调节进度
-		var jindu = function(num){
+	app.controller('musicCtrl',function($scope,$http,$sce,$timeout,$interval,$document){
+		var config = {
+			el: ".m_search_add_target",
+			targetEl:'#target',
+			offset: [10, 10],
+			duration: 800,
+			curvature: 0.01,
+			callback:function(){
+				$('.m_search_add_target').remove();
+			}			
+		};		
+		var addPerfor = function(x,y){
+			$("<div class='m_search_add_target'></div>").appendTo('body').css({
+				'left':x+'px',
+				'top':y+'px'
+			});
+			var parabola = new Parabola(config);		
+			parabola.start();	
+		}
+		$scope.volumeTip = '50%';
+		sliderVolume.init(function(e){
+		    yinliang(e);
+		});	
+		sliderVolume.setSlider(50);		
+		$('#audio')[0].volume = 0.5;
+		function yinliang(num){
+			$('#audio')[0].volume = num/100;
+			$scope.volumeTip = num + '%';
+		}
+		function jindu(num){
 		    if (num != 0){
 		        $('#audio')[0].currentTime = $('#audio')[0].duration*num/100;
 		    }
-		}		
-
+		}	
+		sliderJindu.init(function(e){
+		    jindu(e);
+		});			
 	    $scope.sce = $sce.trustAsResourceUrl;
+	    $scope.waiting = false;
 
-	    // 播放列表
-	    if (storage.get('musicList')){
-	        $scope.musicList = storage.get('musicList');
-	    }
-	    else {
-	        $scope.musicList = [{
-	            name:'听说爱情回来过',
-	            artists:[{
-	                name:'张敬轩',
-	            }],
-	            id:188815,
-	            album:{
-	                picUrl:"http://p4.music.126.net/xR6L9rX4rfRHGY8op0YiFA==/105553116278623.jpg",
-	            },
-	        },{
-	            name:'千百度',
-	            artists:[{
-	                name:'许嵩',
-	            }],
-	            id:167732,
-	            album:{
-	                picUrl:"http://p1.music.126.net/fUEbmHuK22dQkUcIWiA0JA==/3352410953143856.jpg",
-	            },
-	        },{
-	            name:'爱转角',
-	            artists:[{
-	                name:'罗志祥',
-	            }],
-	            id:5249548,
-	            album:{
-	                picUrl:"http://p1.music.126.net/a93EBK1a8DhKb_u0ZL5x-A==/70368744195341.jpg",
-	            },
-	        }];
-	    }
+        var musicList = [{
+            name:'听说爱情回来过',
+            artists:[{
+                name:'张敬轩',
+            }],
+            id:188815,
+            album:{
+                picUrl:"http://p4.music.126.net/xR6L9rX4rfRHGY8op0YiFA==/105553116278623.jpg",
+            },
+        },{
+            name:'千百度',
+            artists:[{
+                name:'许嵩',
+            }],
+            id:167732,
+            album:{
+                picUrl:"http://p1.music.126.net/fUEbmHuK22dQkUcIWiA0JA==/3352410953143856.jpg",
+            },
+        },{
+            name:'爱转角',
+            artists:[{
+                name:'罗志祥',
+            }],
+            id:5249548,
+            album:{
+                picUrl:"http://p1.music.126.net/a93EBK1a8DhKb_u0ZL5x-A==/70368744195341.jpg",
+            },
+        }];
+	    $scope.musicList = storage.get('musicList') || musicList;
 	    // 默认第一首
 	    $scope.nowList = $scope.musicList[0];
+	    // 是否静音
+	    $scope.ismuted = function(){
+	    	return $('#audio')[0].muted;
+	    }
+	    $scope.volumeTitle = '点击设为静音(M)';
+	    $scope.changeMuted = function(){
+	    	// 开启声音
+	    	if ($scope.ismuted()){
+				$('#audio')[0].muted = false;
+				$scope.volumePosition = '-189px';
+				$scope.volumeTitle = '点击设为静音(M)';
+	    	}
+	    	// 静音
+	    	else {
+    			$('#audio')[0].muted = true;
+				$scope.volumePosition = '-225px';
+				$scope.volumeTitle = '点击开启声音(M)';
+	    	}
+	    }
 	    // 是否播放
 	    $scope.isPlay = function(){
 	        return $('#audio')[0].paused;
@@ -69,21 +116,14 @@ define(['app','storage','slider'],function(app,storage,slider){
 	        $('#audio')[0].play();
 	        $scope.musicList.forEach(function(v,i,_){
 	            if (v == $scope.nowList){
-	                var a = document.getElementsByClassName('music_list_repeat');
-	                for (var j=0;j<a.length;j++){
-	                    if (j == i){
-	                        a[i].getElementsByClassName('live_icon')[0].style.display = 'block';
-	                    }
-	                    else {
-	                        a[j].getElementsByClassName('live_icon')[0].style.display = 'none';
-	                    }
-	                }
-	                
+	            	$scope.musicLiveNum = i;
 	            }
 	        });
+	        $('#musicButton').attr('title',$scope.nowList.artists[0].name+'-'+$scope.nowList.name).addClass('music-xuanzhuan').removeClass('music-pause');
 	    }
 	    // 暂停
 	    $scope.pause = function(){
+	    	$('#musicButton').addClass('music-pause');
 	        $('#audio')[0].pause();
 	    }
 	    // 歌曲时长
@@ -199,6 +239,12 @@ define(['app','storage','slider'],function(app,storage,slider){
 	            }
 	        }        
 	    }
+	    // 清除歌曲列表
+	    $scope.clearList = function(){
+	    	$scope.musicList = [];
+	    	$scope.nowList = [];
+	    }
+
 	    // 播放完后自动下一首
 	    $('#audio')[0].addEventListener('ended',function(){
 	        $scope.next();
@@ -211,47 +257,83 @@ define(['app','storage','slider'],function(app,storage,slider){
 	    $scope.searchList = [];
 
 	    $scope.toSearch = function($element){
+	        if (!$scope.searchValue){
+	            return false;
+	        }	  
+	        $scope.waiting = true;  	
 	        if ($scope.searchList.length > 0){
 	            $scope.searchList = [];
 	        }
-	        var mValue = $scope.searchValue;
 	        var url = 'http://s.music.163.com/search/get/?callback=JSON_CALLBACK&type=1&limit=100&s=';
-	        if (!mValue){
-	            return false;
-	        }
-	        else {
-	            $http.jsonp(url+mValue).success(function(data){
-	                var data = data.result.songs;
-	                $scope.searchList = data;           
-	            });
-	        } 
+	        // var url = 'http://music.163.com/api/search/get/?callback=JSON_CALLBACK&type=100&s=';
+            $http.jsonp(url+$scope.searchValue).success(function(data){
+                var data = data.result.songs;
+                $timeout(function(){
+                	$scope.waiting = false;  	
+                	$scope.searchList = data;   
+                },500);
+            });
 	    };
 	    // 搜索歌曲 enter键
 	    $scope.keydown = function($event){
+	    	// P和M键不响应
+	    	if ($event.keyCode == 80 || $event.keyCode == 77){
+	    		$event.stopPropagation();
+	    	}	    	
 	        if ($event.keyCode == 13){
 	            $scope.toSearch();
 	        }
 	    }
-	    // 搜索歌曲列表
-        $scope.dbplay = function(x){
-            $scope.addList(x);
+	    // 搜索歌曲列表-双击播放
+        $scope.dbplay = function(x,$event){     
+          	if (angular.toJson($scope.nowList) === angular.toJson(x)){
+          		return false;
+          	}
             $scope.playmusic(x);
+            // 歌曲不在列表中就添加歌曲
+            if (!$scope.hasId(x)){
+            	$scope.addList(x,$event);
+            }
+            else {
+				addPerfor($event.pageX-9,$event.pageY-9);
+            }
         }
-        $scope.addList = function(x){
+        $scope.hasId = function(x){
+        	var flag = false;
+        	for (i in $scope.musicList){
+        		if (x.id == $scope.musicList[i].id){
+        			flag = true;
+        		}
+        	}     
+        	return flag;   	
+        }
+        // 添加到列表中
+        $scope.addList = function(x,$event){
+        	if ($scope.hasId(x)){
+        		console.log('歌曲已经在列表中了');
+        		return false;
+        	}
+        	addPerfor($event.pageX-9,$event.pageY-9);
             $scope.musicList.push(x);
             storage.set('musicList',$scope.musicList);
         }	    
 	    // 全局键盘事件
-	    // $scope.keyEvents = function($event){
-	    //     // P键暂停或播放
-	    //     if ($event.keyCode == 80){
-	    //         if ($scope.isPlay()){
-	    //             $scope.play();
-	    //         }
-	    //         else {
-	    //             $scope.pause();
-	    //         }
-	    //     }
-	    // }
+	    $document.bind('keydown',function($event){
+	    	$scope.$apply(function(){
+		        // P键暂停或播放
+		        if ($event.keyCode == 80){
+		            if ($scope.isPlay()){
+		                $scope.play();
+		            }
+		            else {
+		                $scope.pause();
+		            }
+		        }
+		        // M键开启声音或静音
+		        if ($event.keyCode == 77){
+		        	$scope.changeMuted();
+		        }
+	    	})
+	    });
 	});	
 })

@@ -31,11 +31,11 @@
 	<div class="fengche-gan"></div>
 </div>
 <!-- 左下角音乐播放器按钮 -->
-<!-- <div class="music-bofangqi" id="musicButton">
+<div class="music-bofangqi" id="musicButton" title="展开音乐">
 	<div class="music-icon"></div>
-</div> -->
+</div>
 <!-- 播放器 -->
-<div class="bofangqi" id="bofangqi" ng-controller="musicCtrl" ng-init="flag1=true;">
+<div class="bofangqi hiddened" id="bofangqi" ng-controller="musicCtrl" ng-init="flag1=true;selectList=1;flag2=true;">
 	<!-- 播放器 -->
 	<audio ng-src="{{sce('http://link.hhtjim.com/163/'+nowList.id+'.mp3')}}" id="audio"></audio>
 	<!-- 控制面板开始 -->
@@ -55,36 +55,36 @@
 	    <!-- 主面板结束 -->
 	    <!-- 控制器开始 -->
 	    <div class="bar_op">
-	        <strong title="上一首( [ )" class="prev_bt" ng-click="prev()"></strong>
+	        <strong title="上一首" class="prev_bt" ng-click="prev()"></strong>
 	        <!-- 播放 -->
-	        <strong title="播放" class="play_bt" ng-show="isPlay()" ng-click="play()"></strong>
+	        <strong title="播放(p)" class="play_bt" ng-show="isPlay()" ng-click="play()"></strong>
 	        <!-- 暂停 -->
-	        <strong title="暂停" class="pause_bt" ng-show="!isPlay()" ng-click="pause()"></strong>
-	        <strong title="下一首( ] )" class="next_bt" ng-click="next()"></strong>
-	        <strong title="列表循环" class="cycle_bt" id="btnPlayway"></strong>
+	        <strong title="暂停(p)" class="pause_bt" ng-show="!isPlay()" ng-click="pause()"></strong>
+	        <strong title="下一首" class="next_bt" ng-click="next()"></strong>
+	        <strong title="列表循环" class="cycle_bt"></strong>
 	        <div class="volume">
-	            <span class="volume_icon" id="spanmute"></span>
-	            <div class="nstSlider-three" id="sliderDivThree">
-				    <div class="bar-three" id="sliderBarThree"></div>
-				    <div class="leftGrip-three" id="sliderGripThree"></div>
+	            <span class="volume_icon" ng-style="{backgroundPositionX:volumePosition}" ng-click="changeMuted()" title="{{volumeTitle}}"></span>
+	            <div class="volume_slider" id="volumeSliderDiv" title="{{volumeTip}}">
+				    <div class="volume_bar" id="volumeSliderBar"></div>
+				    <div class="volume_grip" id="volumeSliderGrip"></div>
 				</div>
 	        </div>
 	    </div>
 	    <!-- 控制器结束 -->
-	    <span title="展开播放列表" class="open_list" ng-click="flag1=false;"><span>{{musicList.length}}</span></span>
+	    <span id="target" class="open_list" title="展开播放列表" ng-click="flag1=false;"><span>{{musicList.length||0}}</span></span>
 		<!-- 列表 -->
 	    <div class="play_list_frame" ng-hide="flag1">
 	    	<!-- top title -->
 	        <div class="play_list_title">
-	            <ul id="tab_container" style="width:270px;">
-	                <li class="current"><a>播放列表</a><i></i></li>
-	                <li><a>搜索音乐</a></li>
+	            <ul>
+	                <li ng-class="{'current':selectList==1}" ng-click="selectList=1;flag2=true;">播放列表</li>
+	                <li ng-class="{'current':selectList==2}" ng-click="selectList=2;flag2=false;">搜索音乐</li>
 	            </ul>
 	            <span id="clear_list" class="clear_list" ng-click="clearList();">清空列表</span>
 	            <strong title="收起播放列表" class="close_list" ng-click="flag1=true;"></strong>
 	        </div>
 	        <!-- 播放列表 -->
-	        <div class="play_list">
+	        <div class="play_list" ng-show="flag2">
 	            <!-- 列表为空提示_S -->
 	            <div class="play_list_point" id="divnulllist" ng-show="!musicList[0]">
 	                <div>
@@ -92,27 +92,47 @@
 	                </div>
 	            </div>
 	            <!-- 列表 -->
-	            <div class="music_list_repeat" ng-repeat="x in musicList track by x.id" ng-dblclick='playmusic(x)'>
-					<span class="live_place"><span class="live_icon"></span></span>{{$index+1}} {{x.artists[0].name}}-{{x.name}}
-					<span class="right_span" ng-click="removeList(x)"></span>
+	            <div class="music_list_repeat" ng-repeat="x in musicList track by x.id" ng-dblclick='playmusic(x)' ng-class="{'music_live':$index==musicLiveNum}">
+					<span class="music_list_info">{{$index+1}} {{x.artists[0].name}}-{{x.name}}</span>
+					<span class="right_span" ng-click="removeList(x)" title="删除歌曲"></span>
 	            </div>
 	        </div>
 	        <!-- 搜索列表 -->
-	        <div class="search_list">
+	        <div class="search_list" ng-show="!flag2">
 	            <!-- 搜索框 -->
 	            <div class="m_search_div">
 	                <input type="text" placeholder="单曲/歌手/专辑/歌单/MV/用户" ng-keydown="keydown($event)" ng-model="searchValue" />
-	                <span ng-click='toSearch();'></span>
+	                <span ng-click='toSearch();' title="搜索歌曲"></span>
 	            </div>
 	            <!-- 渲染搜索信息 -->
 	            <div class="m_search_info">
 	                <li class="m_search_info_title"><span>歌曲</span><span>歌手</span><span>专辑</span></li>
 	                <div class="m_search_scroll">
-			            <li class='m_search_info_title' ng-repeat='x in searchList' ng-dblclick='dbplay(x)'>
+		                <div class="m_search_waiting" ng-show="waiting">
+						    <div class="spinner_container spinner_container1">
+						        <div class="spinner_circle1"></div>
+						        <div class="spinner_circle2"></div>
+						        <div class="spinner_circle3"></div>
+						        <div class="spinner_circle4"></div>
+						    </div>
+						    <div class="spinner_container spinner_container2">
+						        <div class="spinner_circle1"></div>
+						        <div class="spinner_circle2"></div>
+						        <div class="spinner_circle3"></div>
+						        <div class="spinner_circle4"></div>
+						    </div>
+						    <div class="spinner_container spinner_container3">
+						        <div class="spinner_circle1"></div>
+						        <div class="spinner_circle2"></div>
+						        <div class="spinner_circle3"></div>
+						        <div class="spinner_circle4"></div>
+						    </div>
+		                </div>
+			            <li class='m_search_info_title' ng-repeat='x in searchList' ng-dblclick='dbplay(x,$event)' title="双击播放歌曲">
 			                <span title={{x.name}}>{{x.name}}</span>
 			                <span title={{x.artists[0].name}}>{{x.artists[0].name}}</span>
 			                <span title={{x.album.name}}>{{x.album.name}}</span>
-			                <span ng-click='addList(x)'></span>
+			                <span ng-click='addList(x,$event)' title="添加歌曲到列表中"></span>
 			            </li>				
 	                </div>
 	            </div>
@@ -121,15 +141,15 @@
 	    <!-- 进度控制 -->
 	    <div class="m_player_jindu">
 			<span class="jindu_left lefted" ng-bind="nowTime()"></span>
-            <div class="jindu_slider" id="sliderDivFour">
-			    <div class="jindu_bar" id="sliderBarFour"></div>
-			    <div class="jindu_grip" id="sliderGripFour"></div>
+            <div class="jindu_slider" id="jinduSliderDiv">
+			    <div class="jindu_bar" id="jinduSliderBar"></div>
+			    <div class="jindu_grip" id="jinduSliderGrip" ng-class="{'jindu_grip_on':!isPlay()}"></div>
 			</div>			
 			<span class="jindu_right righted" ng-bind="totleTime()"></span>
 	    </div>
 	</div>
 	<!-- 关闭播放器 -->
-	<div class="bofangqi-close" id="bofangqiClose">×</div>
+	<div class="m_player_close" id="bofangqiClose" title="收起播放器" ng-show="flag1">×</div>
 </div>
 <!-- 左上角更新按钮 -->
 <div class="update" id="updateImg" title="更新说明"></div>
@@ -183,7 +203,7 @@
 		<!-- 搜索选项 -->
 		<div class="search-bar">
 			<ul>
-				<li ng-repeat='x in searchTypeList' ng-click="changeType($index)" ng-class="{'search-bar-focus':$index==typeNum}" ng-style="{color:rootColor.color}" ng-bind="x.title"></li>
+				<li ng-repeat='x in searchTypeList' ng-click="changeType($index)" ng-class="{'search-bar-focus':$index==typeNum}" ng-style="{color:fontColor}" ng-bind="x.title"></li>
 			</ul>
 		</div>
 		<!-- 搜索框 -->
@@ -211,8 +231,8 @@
 			<li ng-repeat='x in todoList track by $index' class='infinity-li' ng-right-click='rightClick($index)' 
 			ng-class="{'infinity-li-rotate':num==$index}">
 				<a href='{{x.add}}' target='_blank' class="infinity-a">
-					<div class='infinity-a-logo centered' ng-style='{background:x.color}' ng-bind="x.title"></div>
-					<div class='infinity-a-wenzi centered' ng-bind='x.wenZi' ng-style="{color:rootColor.color}"></div>
+					<div class='infinity-a-logo centered' ng-style='{background:x.color,borderRadius:radiuNum,opacity:opacityNum}' ng-bind="x.title"></div>
+					<div class='infinity-a-wenzi centered' ng-bind='x.wenZi' ng-style="{color:fontColor}"></div>
 				</a>
 				<div class='infinity-edit' ng-click='editBiaoqian(x,$index)' title='编辑标签' ng-show='liNum==$index'></div>
 				<div class='infinity-remove' ng-click='removeBiaoqian(x)' title='删除标签' ng-show='liNum==$index' ng-mouseover='num=$index' ng-mouseout='num=-1'></div>
@@ -245,7 +265,7 @@
 		<div class="rightbar-tj" ng-show="target2==1">
 			<!-- 过滤 -->
 			<div class="rightbar-tj-filter">
-				<input type="search" class="rightbar-tj-filter-input" placeholder="搜索项目" maxlength="10" ng-model="searchString" />
+				<input type="search" class="rightbar-tj-filter-input" placeholder="搜索项目" maxlength="10" ng-model="searchString" ng-keydown="keydown($event)" />
 			</div>
 			<div class="rightbar-tj-main">
 				<!-- 左边导航 -->
@@ -259,8 +279,8 @@
 		<!-- 自定义 -->
 		<div class="rightbar-diy" ng-show="target2==2">
 			<form ng-submit="addBiaoqian()">
-				<input type="url" class="rightbar-diy-input" placeholder="网址" ng-model="address" autofocus required />
-				<input type="text" class="rightbar-diy-input" placeholder="名称" ng-model="name" maxlength="6" required />
+				<input type="url" class="rightbar-diy-input" placeholder="网址" ng-model="address" autofocus required ng-keydown="keydown($event)" />
+				<input type="text" class="rightbar-diy-input" placeholder="名称" ng-model="name" maxlength="6" required ng-keydown="keydown($event)" />
 				<div class="rightbar-diy-choose">
 					<div class="rightbar-diy-choose-yulan" ng-style="{backgroundColor: yulanColor}"></div>
 					<p class="rightbar-diy-choose-p centered">选择颜色</p>
@@ -282,20 +302,22 @@
 		<div class="rightbar-setting-main">
 			<div class="rightbar-setting-tmd">
 				<div class="rightbar-setting-title">
-					<span class="lefted rightbar-setting-title-span">图标不透明度</span><span class="righted rightbar-setting-title-span">26%</span>
+					<span class="lefted rightbar-setting-title-span">图标不透明度</span>
+					<span class="righted rightbar-setting-title-span">{{opacitySliderNum}}%</span>
 				</div>
-				<div class="rightbar-setting-slider">
-				    <div class="rightbar-setting-leftbar"></div>
-				    <div class="rightbar-setting-grip"></div>
+				<div class="rightbar-setting-slider" id="opacitySliderDiv">
+				    <div class="rightbar-setting-leftbar" id="opacitySliderBar"></div>
+				    <div class="rightbar-setting-grip" id="opacitySliderGrip"></div>
 				</div>
 			</div>
 			<div class="rightbar-setting-yuanjiao">
 				<div class="rightbar-setting-title">
-					<span class="lefted rightbar-setting-title-span">图标圆角度数</span><span class="righted rightbar-setting-title-span">26%</span>
+					<span class="lefted rightbar-setting-title-span">图标圆角度数</span>
+					<span class="righted rightbar-setting-title-span">{{radiuSliderNum}}%</span>
 				</div>
-				<div class="rightbar-setting-slider">
-				    <div class="rightbar-setting-leftbar"></div>
-				    <div class="rightbar-setting-grip"></div>
+				<div class="rightbar-setting-slider" id="radiuSliderDiv">
+				    <div class="rightbar-setting-leftbar" id="radiuSliderBar"></div>
+				    <div class="rightbar-setting-grip" id="radiuSliderGrip"></div>
 				</div>					
 			</div>
 			<div class="rightbar-setting-color">

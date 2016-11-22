@@ -33,7 +33,6 @@
 	background-image: url(../img/music-bg.png);
 	background-size: 40px auto;
 	cursor: pointer;
-	display: none;
 }
 .music-icon{
 	width:20px;
@@ -45,10 +44,10 @@
 }
 
 .music-xuanzhuan{
-	animation:five 5s linear infinite;
-	-webkit-animation:five 5s linear infinite;
-	-moz-animation:five 5s linear infinite;
-	-o-animation:five 5s linear infinite;	
+	animation:myfive 5s linear infinite;
+	-webkit-animation:myfive 5s linear infinite;
+	-moz-animation:myfive 5s linear infinite;
+	-o-animation:myfive 5s linear infinite;	
 }
 .music-pause{
 	animation-play-state:paused;

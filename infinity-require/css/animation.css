@@ -241,6 +241,27 @@
     	border-radius: 50%;
     }           
 }
+/*正在播放进度条onlive*/
+@keyframes jinduOn{
+	from{box-shadow: rgba(255,254,161,.6) 0 0 10px 5px;}
+	50%{box-shadow: rgba(255,254,161,0) 0 0 10px 5px;}
+	to{box-shadow: rgba(255,254,161,.6) 0 0 10px 5px;}
+}
+@-webkit-keyframes jinduOn{
+	from{box-shadow: rgba(255,254,161,.6) 0 0 10px 5px;}
+	50%{box-shadow: rgba(255,254,161,0) 0 0 10px 5px;}
+	to{box-shadow: rgba(255,254,161,.6) 0 0 10px 5px;}
+}
+@-moz-keyframes jinduOn{
+	from{box-shadow: rgba(255,254,161,.6) 0 0 10px 5px;}
+	50%{box-shadow: rgba(255,254,161,0) 0 0 10px 5px;}
+	to{box-shadow: rgba(255,254,161,.6) 0 0 10px 5px;}
+}
+@-o-keyframes jinduOn{
+	from{box-shadow: rgba(255,254,161,.6) 0 0 10px 5px;}
+	50%{box-shadow: rgba(255,254,161,0) 0 0 10px 5px;}
+	to{box-shadow: rgba(255,254,161,.6) 0 0 10px 5px;}
+}
 /*路由划入划出动画*/
 @keyframes slide-in {
 	from { opacity: 0.8; margin-left: 100px}
