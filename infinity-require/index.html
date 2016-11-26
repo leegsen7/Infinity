@@ -3,15 +3,7 @@
 <head>
 <title>新标签页</title>
 <meta charset="utf-8" />
-<link rel="stylesheet" href="css/animation.css" type="text/css"/>
-<link rel="stylesheet" href="css/style.css" type="text/css"/>
-<link rel="stylesheet" href="css/loading.css" type="text/css"/>
-<link rel="stylesheet" href="css/index.css" type="text/css"/>
-<link rel="stylesheet" href="css/change.css" type="text/css"/>
-<link rel="stylesheet" href="css/search.css" type="text/css"/>
-<link rel="stylesheet" href="css/infinity.css" type="text/css"/>
-<link rel="stylesheet" href="css/rightbar.css" type="text/css"/>
-<link rel="stylesheet" href="css/music.css" type="text/css"/>
+<link rel="stylesheet" href="dist/css/index.min.css" type="text/css"/>
 </head>
 <body ng-controller="bodyCtrl" ng-click="body($target)">
 <!-- 加载动画 -->
@@ -37,7 +29,7 @@
 <!-- 播放器 -->
 <div class="bofangqi hiddened" id="bofangqi" ng-controller="musicCtrl" ng-init="flag1=true;selectList=1;flag2=true;">
 	<!-- 播放器 -->
-	<audio ng-src="{{sce('http://link.hhtjim.com/163/'+nowList.id+'.mp3')}}" id="audio"></audio>
+	<audio ng-src="{{sce('http://link.hhtjim.com/163/'+nowList.id+'.mp3')}}" id="audio" preload="preload"></audio>
 	<!-- 控制面板开始 -->
 	<div class="m_player" role="application">
 	    <!-- 主面板开始 -->
@@ -61,7 +53,7 @@
 	        <!-- 暂停 -->
 	        <strong title="暂停(p)" class="pause_bt" ng-show="!isPlay()" ng-click="pause()"></strong>
 	        <strong title="下一首" class="next_bt" ng-click="next()"></strong>
-	        <strong title="列表循环" class="cycle_bt"></strong>
+	        <strong class="cycle_bt" ng-style="{backgroundPositionX:playmodelX}" ng-click="playModel()" title="{{playmodelTitle}}"></strong>
 	        <div class="volume">
 	            <span class="volume_icon" ng-style="{backgroundPositionX:volumePosition}" ng-click="changeMuted()" title="{{volumeTitle}}"></span>
 	            <div class="volume_slider" id="volumeSliderDiv" title="{{volumeTip}}">

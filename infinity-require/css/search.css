@@ -133,8 +133,10 @@
     width:2.0rem;
     height: 2.0rem;
     margin:0 1.0rem;
-    background-image: url(../img/search.png);
-    background-size: 2.0rem auto;
+    background-image: url(../img/icon.png);
+    background-size: 4.0rem auto;
+    background-position: 0 -14rem;
+    
 }
 .search-input-right:hover{
 	opacity: 1.0;

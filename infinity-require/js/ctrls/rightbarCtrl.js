@@ -2,6 +2,7 @@ define(function(require){
 	var Slider = require('slider');
 	var app = require('app');
 	var storage = require('storage');
+	var config = require('config');
 	var opacitySlider = new Slider('opacitySliderGrip','opacitySliderDiv','opacitySliderBar');
 	var radiuSlider = new Slider('radiuSliderGrip','radiuSliderDiv','radiuSliderBar');	
 	
@@ -16,8 +17,8 @@ define(function(require){
 			storage.set('Infinity_Angular_Info',{'opacity':$scope.opacitySliderNum,'radiu':$scope.radiuSliderNum});
 			$scope.$emit('sendSliderInfo',{'opacity':$scope.opacitySliderNum,'radiu':$scope.radiuSliderNum});
 		});
-		var opacity = storage.get('Infinity_Angular_Info').opacity || 90;
-		var radiu = storage.get('Infinity_Angular_Info').radiu || 50;
+		var opacity = storage.get('Infinity_Angular_Info') ? storage.get('Infinity_Angular_Info').opacity : 90;
+		var radiu = storage.get('Infinity_Angular_Info') ? storage.get('Infinity_Angular_Info').radiu : 50;
 		opacitySlider.setSlider(opacity);
 		radiuSlider.setSlider(radiu);
 		$scope.opacitySliderNum = opacity;
@@ -27,7 +28,7 @@ define(function(require){
 		// 获取瞄点
 		var routeHash = window.location.hash;
 		// 路由数组
-		var hashArray = ['#/','#/news','#/music','#/pic','#/shop','#/sport','#/blog','#/tec','#/game','#/edu'];	
+		var hashArray = config.hashList;
 		// 捕捉路由
 		$scope.num = 0;
 		for (i in hashArray){
@@ -36,37 +37,7 @@ define(function(require){
 			}
 		}			
 		// 路由参数
-		$scope.routeHashList = [{
-			href:'#/',
-			title:'应用与工具'
-		},{
-			href:'#/news',
-			title:'新闻与阅读'
-		},{
-			href:'#/music',
-			title:'音乐与视频'
-		},{
-			href:'#/pic',
-			title:'图片与照片'
-		},{
-			href:'#/shop',
-			title:'购物与团购'
-		},{
-			href:'#/sport',
-			title:'体育与旅行'
-		},{
-			href:'#/blog',
-			title:'社交与博客'
-		},{
-			href:'#/tec',
-			title:'数码与科技'
-		},{
-			href:'#/game',
-			title:'游戏与娱乐'
-		},{
-			href:'#/edu',
-			title:'教育与招聘'
-		}];	
+		$scope.routeHashList = config.routeList;
 		$scope.link = function($index){
 			$scope.num = $index;
 		}
@@ -81,7 +52,7 @@ define(function(require){
 			storage.set('Infinity_Angular_Array',$rootScope.todoList);
 		}
 		// 自定义
-		$scope.chooseColor = ['#1ABC9C','#2ECC71','#33C5C5','#3498DB','#9B59B6','#34495E','#F1C40F','#E67E22','#E74C3C','#95A5A6','#39F076','#D80843'];	
+		$scope.chooseColor = config.bgcolorList;
 		$scope.colorNum = 0;
 		$scope.yulanColor = '#1ABC9C';
 		$scope.selectColor = function($index,x){
@@ -100,11 +71,11 @@ define(function(require){
 			storage.set('Infinity_Angular_Array',$rootScope.todoList);		
 		}	
 		// 设置
-		$scope.setColorList = ['#FFF','#2ECC71','#33C5C5','#3498DB','#9B59B6','#34495E','#F1C40F','#E67E22','#E74C3C','#95A5A6','#39F076','#D80843'];
+		$scope.setColorList = config.fontcolorList;
 
 
-		$scope.settingNum = storage.get('Infinity_Angular_Color').num || 0;
-		$scope.settingColor = storage.get('Infinity_Angular_Color').color || '#fff';
+		$scope.settingNum = storage.get('Infinity_Angular_Color') ? storage.get('Infinity_Angular_Color').num : 0;
+		$scope.settingColor = storage.get('Infinity_Angular_Color') ? storage.get('Infinity_Angular_Color').color : '#fff';
 		$scope.$emit('sentfootColor',$scope.settingColor);
 		$scope.settingColor = function(x,$index){
 			$scope.settingNum = $index;

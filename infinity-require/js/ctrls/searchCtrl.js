@@ -1,30 +1,8 @@
-define(['app','storage'],function(app,storage){
+define(['app','storage','config'],function(app,storage,config){
 	app.controller('searchCtrl',function($scope,$http,$timeout){
 		// 搜索选项参数
-		$scope.searchTypeList = [{
-			title:'网页'
-		},{
-			title:'图片'
-		},{
-			title:'地图'
-		},{
-			title:'视频'
-		},{
-			title:'新闻'
-		}];		
-		$scope.searchJson = [[
-			'https://www.baidu.com/s?ie=UTF-8&wd=',
-			'http://image.baidu.com/search/index?tn=baiduimage&word=',
-			'http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D',
-			'http://video.baidu.com/v?ie=utf-8&word=',
-			'http://news.baidu.com/ns?tn=news&ie=utf-8&word='				
-		],[
-			'https://www.google.com/search?q=',
-			'https://www.google.com/search?tbm=isch&q=',
-			'https://www.google.com/maps/preview?q=',
-			'https://www.google.com/search?tbm=vid&q=',
-			'https://www.google.com/search?tbm=nws&q='
-		]];	
+		$scope.searchTypeList = config.searchTypeList;		
+		$scope.searchJson = config.searchBrowserList;	
 		// 改变搜索类型
 		$scope.typeNum = 0;
 		$scope.changeType = function($index){

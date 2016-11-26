@@ -1,5 +1,3 @@
-@charset "utf-8";
-
 /*播放器*/
 .bofangqi{
     width:540px;
@@ -179,11 +177,11 @@
 }
 
 .m_player .bar_op .cycle_bt {
-    background-position: -145px -60px;
+    background-position: -291px 0;
 }
 
 .m_player .bar_op .cycle_bt:hover {
-    background-position-x: -182px;
+    background-position-y: -28px;
 }
 
 .m_player .bar_op .cycle_single_bt {
@@ -345,7 +343,7 @@
     display: block;
     width: 15px;
     height: 8px;
-    background: url(../img/player_bg.png?d=20150305173439) no-repeat -504px -28px;
+    background: url(../img/player_bg.png?d=20150305173439) no-repeat -605px -120px;
     position: absolute;
     left: 50%;
     margin: 0 0 0 -7px;
@@ -419,7 +417,8 @@
 .m_player .play_list {
     height: 455px;
     width: inherit;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     position: absolute;
     /*border-top:solid 1px #262626;*/
     top: 53px;
@@ -427,7 +426,7 @@
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-    padding: 20px 0 0 20px;
+    padding: 20px 0 10px 20px;
     color:rgba(255,255,255,.8);
 }
 
@@ -485,8 +484,9 @@
     position: absolute;
     top:4px;
     left:10px;
-    background-image: url(../img/live.png);
-    background-size: 16px auto;    
+    background-image: url(../img/icon.png);
+    background-size: 32px auto;    
+    background-position: 0 -128px;
 }
 .music_list_info{
     margin-left: 35px;
@@ -538,8 +538,9 @@
     position: absolute;
     top:7px;
     right:14px;
-    background-image:url(../img/search1.png);
-    background-size: 20px auto;
+    background-image:url(../img/icon.png);
+    background-size: 40px auto;
+    background-position: -20px -140px;
     cursor: pointer;
 }
 .m_search_info{

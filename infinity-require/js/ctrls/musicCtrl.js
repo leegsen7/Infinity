@@ -4,6 +4,8 @@ define(function(require){
 	var $ = require('jquery');
 	var Slider = require('slider');
 	var Parabola = require('parabola');
+	var globalConfig = require('config');
+
 	var sliderJindu = new Slider('jinduSliderGrip','jinduSliderDiv','jinduSliderBar');
 	var sliderVolume = new Slider('volumeSliderGrip','volumeSliderDiv','volumeSliderBar');	
 	// 音乐控制器
@@ -47,35 +49,7 @@ define(function(require){
 	    $scope.sce = $sce.trustAsResourceUrl;
 	    $scope.waiting = false;
 
-        var musicList = [{
-            name:'听说爱情回来过',
-            artists:[{
-                name:'张敬轩',
-            }],
-            id:188815,
-            album:{
-                picUrl:"http://p4.music.126.net/xR6L9rX4rfRHGY8op0YiFA==/105553116278623.jpg",
-            },
-        },{
-            name:'千百度',
-            artists:[{
-                name:'许嵩',
-            }],
-            id:167732,
-            album:{
-                picUrl:"http://p1.music.126.net/fUEbmHuK22dQkUcIWiA0JA==/3352410953143856.jpg",
-            },
-        },{
-            name:'爱转角',
-            artists:[{
-                name:'罗志祥',
-            }],
-            id:5249548,
-            album:{
-                picUrl:"http://p1.music.126.net/a93EBK1a8DhKb_u0ZL5x-A==/70368744195341.jpg",
-            },
-        }];
-	    $scope.musicList = storage.get('musicList') || musicList;
+	    $scope.musicList = storage.get('musicList') || globalConfig.musicList;
 	    // 默认第一首
 	    $scope.nowList = $scope.musicList[0];
 	    // 是否静音
@@ -97,6 +71,20 @@ define(function(require){
 				$scope.volumeTitle = '点击开启声音(M)';
 	    	}
 	    }
+	    $scope.playmodelTitle = "列表循环";
+	    // 播放模式：1-列表循环 2-单曲循环
+	    $scope.playModel = function(){
+	    	if ($scope.playmodelTitle == "列表循环"){
+	    		$scope.playmodelX = '-255px';
+	    		$scope.playmodelTitle = "单曲循环";
+	    		$('#audio').attr('loop',true);
+	    	}
+	    	else {
+	    		$scope.playmodelX = '-291px';
+	    		$scope.playmodelTitle = "列表循环";
+	    		$('#audio').attr('loop',false);
+	    	}
+	    }	    
 	    // 是否播放
 	    $scope.isPlay = function(){
 	        return $('#audio')[0].paused;
@@ -181,6 +169,7 @@ define(function(require){
 	    }
 	    // 下一首歌
 	    $scope.next = function(){
+	    	sliderJindu.setSlider(0);
 	        var len = $scope.musicList.length;
 	        if (len == 1){
 	            tipFadeOut('当前只有一首歌~');
@@ -211,6 +200,7 @@ define(function(require){
 	    }
 	    // 上一首歌
 	    $scope.prev = function(){
+	    	sliderJindu.setSlider(0);
 	        var len = $scope.musicList.length;
 	        if (len == 1){
 	            tipFadeOut('当前只有一首歌~');
@@ -248,6 +238,7 @@ define(function(require){
 	    // 播放完后自动下一首
 	    $('#audio')[0].addEventListener('ended',function(){
 	        $scope.next();
+	        console.log('end');
 	        $timeout(function(){
 	            $scope.play();
 	        },100);

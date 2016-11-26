@@ -1,7 +1,7 @@
 define(['jquery'],function($){
 	// 更换背景图函数
 	var changeBackground = function (num){
-		var randomSrc = 'img/beijing'+num+'.png';
+		var randomSrc = 'dist/img/beijing'+num+'.png';
 		var img = new window.Image();
 		img.src = randomSrc;
 
