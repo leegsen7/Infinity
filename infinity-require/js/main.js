@@ -6,6 +6,8 @@ require.config({
 		"angular-route":"libs/angular-route.min",
 		'angular-animate':'libs/angular-animate.min',
 		"jquery":"libs/jquery.min",
+		"angular-toastr":"libs/angular-toastr.min",
+		"angular-page":"libs/angular-page",
 		// dom
 		"redirect":'dom/redirect',
 		'start':'dom/start',
@@ -30,7 +32,6 @@ require.config({
 		// filter
 		'filter':'filter/filter',
 		// factory
-		// 'json':'factory/json',
 		'service':'factory/service',
 	},
     shim:{
@@ -45,6 +46,14 @@ require.config({
         'angular-animate':{
         	deps:['angular'],
         	exports:'angular-animate',
+        },
+        'angular-toastr':{
+        	deps:["angular"],
+        	export:'toastr',
+        },
+        'angular-page':{
+        	deps:['angular'],
+        	exports:'ngPage',
         },
         'parabola':{
         	deps:['jquery'],
@@ -61,9 +70,8 @@ require([
 	'background',
 	'rightbar',
 	'music',
-	'angular-route',
+	// 'angular-route',
 	'service',
-	// 'json',
 	'infinityCtrl',
 	'ngRightClick',
 	'changeCtrl',

@@ -1,4 +1,6 @@
-define(['app'],function(app){
+define(function(require){
+	var app = require('app');
+	
 	// 路由
 	app.config(['$routeProvider',function($routeProvider){
 		$routeProvider

@@ -5,11 +5,12 @@ define(function(require){
 	var Slider = require('slider');
 	var Parabola = require('parabola');
 	var globalConfig = require('config');
+	var toastr = require('angular-toastr');
 
 	var sliderJindu = new Slider('jinduSliderGrip','jinduSliderDiv','jinduSliderBar');
 	var sliderVolume = new Slider('volumeSliderGrip','volumeSliderDiv','volumeSliderBar');	
 	// 音乐控制器
-	app.controller('musicCtrl',function($scope,$http,$sce,$timeout,$interval,$document){
+	app.controller('musicCtrl',function($scope,$http,$sce,$timeout,$interval,$document,toastr){
 		var config = {
 			el: ".m_search_add_target",
 			targetEl:'#target',
@@ -92,7 +93,7 @@ define(function(require){
 	    // 播放
 	    $scope.play = function(){
 	        if ($scope.musicList == ''){
-	            tipFadeOut('播放列表为空，快去搜索歌曲添加吧');
+	            toastr.warning('播放列表为空，快去搜索歌曲添加吧');
 	            return false;
 	        }
 	        if ($scope.nowList == undefined && $scope.musicList){
@@ -156,6 +157,7 @@ define(function(require){
 	            }
 	        });
 	        storage.set('musicList',$scope.musicList);
+	        toastr.success('删除歌曲成功');
 	    }
 	    // 播放一首歌
 	    $scope.playmusic = function(x){
@@ -172,7 +174,7 @@ define(function(require){
 	    	sliderJindu.setSlider(0);
 	        var len = $scope.musicList.length;
 	        if (len == 1){
-	            tipFadeOut('当前只有一首歌~');
+	            toastr.warning('当前只有一首歌~');
 	            return;
 	        }        
 	        for (var i=0;i<len;i++){
@@ -203,7 +205,7 @@ define(function(require){
 	    	sliderJindu.setSlider(0);
 	        var len = $scope.musicList.length;
 	        if (len == 1){
-	            tipFadeOut('当前只有一首歌~');
+	            toastr.warning('当前只有一首歌~');
 	            return;
 	        }
 	        for (var i=0;i<len;i++){
@@ -301,12 +303,13 @@ define(function(require){
         // 添加到列表中
         $scope.addList = function(x,$event){
         	if ($scope.hasId(x)){
-        		console.log('歌曲已经在列表中了');
+        		toastr.warning('歌曲已经在列表中了');
         		return false;
         	}
         	addPerfor($event.pageX-9,$event.pageY-9);
             $scope.musicList.push(x);
             storage.set('musicList',$scope.musicList);
+            toastr.success('添加歌曲成功');
         }	    
 	    // 全局键盘事件
 	    $document.bind('keydown',function($event){

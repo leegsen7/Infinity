@@ -1,5 +1,10 @@
-define(['app','storage','config'],function(app,storage,config){
-	app.controller('infinityCtrl',function($scope,Service,$rootScope){
+define(function(require){
+	var app = require('app');
+	var storage = require('storage');
+	var config = require('config');
+	var toastr = require('angular-toastr');
+
+	app.controller('infinityCtrl',function($scope,Service,$rootScope,toastr){
 		// 读取数据
 		$rootScope.todoList = storage.get('Infinity_Angular_Array') || config.infinityList;
 
@@ -7,7 +12,7 @@ define(['app','storage','config'],function(app,storage,config){
 		$scope.liNum = -1;
 		$scope.rightClick = function($index){
 			$scope.liNum = $index;			
-		}		
+		}	
 		// 接受广播
 		$scope.$on('$scopeliNum',function(e,data){
 			$scope.liNum = data;
@@ -15,13 +20,17 @@ define(['app','storage','config'],function(app,storage,config){
 	    $scope.$on('giveFontColor',function(e,data){
 	    	$scope.fontColor = data;
 	    });		
+	    // 分页回调
+	    $scope.pageChangeHandler = function(x){
+	    	console.log(x);
+	    }
 		// 删除标签
 		$scope.removeBiaoqian = function(x){
 			$scope.liNum = -1;
 			$rootScope.todoList.forEach(function(v,i,_){
 				if (v == x){
 					_.splice(i,1);
-					// tipFadeOut('删除成功');
+					toastr.success('删除'+x.wenZi+'标签成功');
 				}
 			});
 			storage.set('Infinity_Angular_Array',$rootScope.todoList);

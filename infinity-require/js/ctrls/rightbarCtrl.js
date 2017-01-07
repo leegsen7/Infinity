@@ -3,10 +3,12 @@ define(function(require){
 	var app = require('app');
 	var storage = require('storage');
 	var config = require('config');
+	var toastr = require('angular-toastr');
+
 	var opacitySlider = new Slider('opacitySliderGrip','opacitySliderDiv','opacitySliderBar');
 	var radiuSlider = new Slider('radiuSliderGrip','radiuSliderDiv','radiuSliderBar');	
 	
-	app.controller('rightbarCtrl',function($scope,$rootScope){
+	app.controller('rightbarCtrl',function($scope,$rootScope,toastr){
 		opacitySlider.init(function(e){
 			$scope.opacitySliderNum = Math.floor(e);
 			storage.set('Infinity_Angular_Info',{'opacity':$scope.opacitySliderNum,'radiu':$scope.radiuSliderNum});
@@ -50,6 +52,7 @@ define(function(require){
 			}
 			$rootScope.todoList.push(x);
 			storage.set('Infinity_Angular_Array',$rootScope.todoList);
+			toastr.success('添加'+i.titleName+'标签成功');
 		}
 		// 自定义
 		$scope.chooseColor = config.bgcolorList;
@@ -68,7 +71,8 @@ define(function(require){
 			}
 			$rootScope.todoList.push(x);
 			$scope.name = $scope.address = '';
-			storage.set('Infinity_Angular_Array',$rootScope.todoList);		
+			storage.set('Infinity_Angular_Array',$rootScope.todoList);	
+			toastr.success('添加'+$scope.name+'标签成功');	
 		}	
 		// 设置
 		$scope.setColorList = config.fontcolorList;
