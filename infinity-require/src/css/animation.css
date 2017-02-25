@@ -1,0 +1,134 @@
+/*动画*/
+
+/*右上角功能按钮hover动画*/
+@keyframes myfirst{
+	from{box-shadow: inset red 0 0 40px;}
+	50%{box-shadow: inset orange 0 0 40px;}
+	to{box-shadow: inset red 0 0 40px;}
+}
+
+/*标签hover动画*/
+@keyframes mythree{
+	from{box-shadow: skyblue 0 0 20px;}
+	50%{box-shadow: #fff 0 0 20px;}
+	to{box-shadow: skyblue 0 0 20px;}
+}
+
+@keyframes myfour{
+	from{text-shadow: red 0 0 40px;}
+	50%{text-shadow: #fff 0 0 40px;}
+	to{text-shadow: red 0 0 40px;}
+}
+/*左上角更新按钮旋转-右下角风车旋转*/
+@keyframes myfive{
+	form{transform:rotate(0deg);}
+	to{transform:rotate(360deg);}
+}
+
+/*标签页放大*/
+@keyframes fangda{
+	0%{transform:scale(0.1,0.1);}
+	100%{transform:scale(1,1);}
+}
+/*右键鼠标旋转*/
+@keyframes rotate{
+	0%,50%,100%{transform:rotate(0);}
+	25%{transform:rotate(-2deg);}
+	75%{transform:rotate(2deg);}
+}
+/*展开播放器*/
+@keyframes guodu {
+    0% {
+    	transform: translate(-220px,40px) scale(0.071428,0.333333) rotate(0deg);
+    	border-radius: 100%;
+        overflow: hidden;
+    }
+    10%{
+        transform: translate(-120px,-60px) scale(0.071428,0.333333);
+        border-radius: 100%;
+        overflow: hidden;
+    }
+    20%{
+        transform: translate(-20px,40px) scale(0.071428,0.333333) rotate(360deg);
+        border-radius: 100%;
+        overflow: hidden;
+    }     
+    35% {
+		transform: translate(-100px,0) scale(0.33,1) rotate(720deg);
+		border-radius: 100%;
+        overflow: hidden;
+    }
+    40%{
+        transform: translate(-100px,0) scale(0.33,1);
+        border-radius: 0;
+        overflow: hidden;        
+    }  
+    60% {
+        transform: translate(-60px,0) scale(0.66,1);
+        border-radius: 0;
+    }
+    90% {
+		transform: translate(-30px,0) scale(0.9444444,1);
+		border-radius: 0;
+    }
+    100% {
+        transform: translate(0,0) scale(1);
+        border-radius: 0;
+    }
+}
+/*折叠播放器*/
+@keyframes back{
+    0% {
+        transform: translate(0,0) scale(1);
+        border-radius: 0;
+    }
+    5% {
+		transform: translate(-30px,0) scale(0.9444444,1);
+		border-radius: 0;
+    }
+    15% {
+        transform: translate(-100px,0) scale(0.66,1);
+        border-radius: 10%;
+    }  
+    45% {
+		transform: translate(-160px,0) scale(0.33,1);
+		border-radius: 20%;
+    } 
+    60%{
+    	transform:translate(0px,0px) scale(0.222222,1) rotate(360deg);
+    	border-radius: 30%;
+    } 
+    75%{
+    	transform: translate(-110px,20px) scale(0.1,0.666666) rotate(180deg);
+    	border-radius: 40%;
+    }  
+    100% {
+    	transform: translate(-220px,-40px) scale(0.071428,0.333333) rotate(0deg);
+    	border-radius: 50%;
+    }           
+}
+/*正在播放进度条onlive*/
+@keyframes jinduOn{
+	from{box-shadow: rgba(255,254,161,.6) 0 0 10px 5px;}
+	50%{box-shadow: rgba(255,254,161,0) 0 0 10px 5px;}
+	to{box-shadow: rgba(255,254,161,.6) 0 0 10px 5px;}
+}
+/*路由划入划出动画*/
+@keyframes slide-in {
+	from { opacity: 0.8; margin-left: 100px}
+	to { opacity: 1; margin-left: 0}
+}
+/*淡出*/
+@keyframes slide-out {
+	from { opacity: 0.2; margin-left: 0}
+	to { opacity: 0; margin-left: 100px}
+}
+/*修改标签淡入淡出动画*/
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}

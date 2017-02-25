@@ -3,7 +3,24 @@
 <head>
 <title>新标签页</title>
 <meta charset="utf-8" />
-<link rel="stylesheet" href="dist/css/index.min.css" type="text/css"/>
+<link rel="stylesheet" href="dist/css/index.min.css" type="text/css" />
+<link rel="shortcut icon" href="dist/img/favicon.ico" />
+<script>
+;(function (){
+	var sUserAgent = navigator.userAgent.toLowerCase();
+	var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+	var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+	var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+	var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+	var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+	var bIsAndroid = sUserAgent.match(/android/i) == "android";
+	var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+	var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+	if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+		window.location.href = "error.html";
+	}
+})();
+</script>
 </head>
 <body ng-controller="bodyCtrl" ng-click="body($target)">
 	<!-- 加载动画 -->
@@ -143,42 +160,8 @@
 			<!-- 关闭播放器 -->
 			<div class="m_player_close" id="bofangqiClose" title="收起播放器" ng-show="flag1">×</div>
 		</div>
-		<!-- 左上角更新按钮 -->
-		<div class="update" id="updateImg" title="更新说明"></div>
-		<!-- 更新说明 -->
-		<div class="update-bg" id="bg">
-			<div class="update-div">
-				<div class="update-div-top">更新说明</div>
-				<span id="close" class="update-div-span">×</span>
-				<div class="update-div-main">
-					<p class="centered">2016-09-24</p>
-					1、标签增加至两页20个<br />
-					2、左下角增加音乐功能(由于网易云的原因，可能有时候播放不了)<br />
-					<p class="centered">2016-09-02</p>
-					1、优化一些不兼容情况<br />
-					2、增加google搜索功能<br />
-					<p class="centered">2016-08-20</p>
-					1、增加启动动画，等待http请求加载完后进入主页<br />
-					<p class="centered">2016-07-23</p>
-					1、第一次访问弹出更新说明<br />
-					2、增加标签推荐和过滤功能，angular路由、过滤器和指令实现<br />
-					3、禁用右键菜单，右键点击实现修改和删除功能<br />
-					4、增加修改标签修改功能<br />
-					<p class="centered">2016-07-14</p>
-					1、新增H5本地存储标签数据，新增或删除标签和改变标签圆角和透明度操作保存数据在本地，使得再次刷新原操作保留。
-					<p class="centered">2016-07-02</p>
-					1、点击小风车旋转更换背景图<br />
-					2、点击右上方按钮滑出操作栏<br />
-					3、自定义添加标签，输入网址、名称和选择背景颜色<br />
-					4、设置图标不透明度、图标圆角度数和文字颜色<br />
-					5、实现百度搜索和切换搜索内容<br />
-					6、移动标签位置和删除标签<br />
-					7、添加了更新说明<br />
-				</div>
-			</div>
-		</div>
 		<!-- 修改标签 -->
-		<div class="change-bg" ng-controller="changeCtrl" ng-hide="data.change_flag" ng-init="data.change_flag=true" ng-click="targetClick($event);">
+		<div class="change-bg" ng-controller="changeCtrl" ng-init="data.change_flag=true" ng-hide="data.change_flag"  ng-click="targetClick($event);">
 			<div class="change-biaoqian">
 				<h1 class="centered">修改标签</h1>
 				<form ng-submit="changeBiaoqian()">
@@ -324,6 +307,6 @@
 			</div>
 		</div>
 	</div>
-	<script src="dist/js/require.min.js" data-main="js/main"></script>
+	<script src="./dist/js/require.min.js" data-main="./dist/js/main.js"></script>
 </body>
 </html>

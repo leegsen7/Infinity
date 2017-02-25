@@ -1,0 +1,106 @@
+@charset "utf-8";
+
+/*初始化*/
+body{
+	padding:0;
+	margin:0;
+	overflow: hidden;
+	font-size: 16px;
+	background-color: rgba(0,0,0,.8);
+}
+ul{
+	list-style: none;
+	padding:0;
+	margin:0;
+}
+li{
+	list-style: none;
+}
+a{
+	color:#fff;
+	text-decoration: none;
+	font-size: 16px;
+}
+
+.border-box{
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;	
+}
+.centered{
+	text-align: center;
+}
+.lefted{
+	float: left;
+}
+.righted{
+	float: right;
+}
+.hiddened{
+    visibility: hidden; 
+}
+.noneed{
+	display: none;
+}
+/*滚动条*/
+/*webkit内核*/
+::-webkit-scrollbar {
+	width: 14px;
+	height: 14px;
+}
+::-webkit-scrollbar-track, ::-webkit-scrollbar-thumb {
+	border-radius: 999px;
+	border: 5px solid transparent;
+}
+::-webkit-scrollbar-track {
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, .2) inset;
+}
+::-webkit-scrollbar-thumb {
+	min-height: 20px;
+	background-clip: content-box;
+	box-shadow: 0 0 0 5px rgba(0, 0, 0, .2) inset;
+}
+::-webkit-scrollbar-corner {
+	background: transparent;
+}
+/*媒体查询*/
+@media screen and (max-width: 1360px){
+	.backgroundImg{
+		background-size: 1360px 1360px;
+	}
+}
+@media screen and (max-width: 1200px){
+	#addButton,#changeWallpaper,#rightBar{
+		display: none;
+	}
+}
+@media screen and (min-width: 1920px){
+	html{
+		font-size: 28px;
+	}
+}
+@media screen and (max-width: 1919px){
+	html{
+		font-size: 26px;
+	}
+}
+@media screen and (max-width: 1700px){
+	html{
+		font-size: 24px;
+	}
+}
+@media screen and (max-width: 1440px){
+	html{
+		font-size: 22px;
+	}
+}
+@media screen and (max-width: 1366px){
+	html{
+		font-size: 20px;
+	}
+}
+@media screen and (max-width: 1200px){
+	html{
+		font-size: 18px;
+	}
+}

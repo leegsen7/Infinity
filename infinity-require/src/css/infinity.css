@@ -1,0 +1,89 @@
+@charset "utf-8";
+
+
+.infinity-ul{
+	width:45.0rem;
+	height: 16.0rem;
+	display: inline-block;
+}
+.infinity-li{
+	width:5.0rem;
+	height: 8.0rem;
+	display: inline-block;
+	margin:0 2.0rem;
+	position: relative;
+}
+/*ng-repeat 动画*/
+.infinity-li.ng-enter{
+	transform: translateX(-200px);
+	transition-duration: 1000ms;
+	opacity: 0;
+}
+.infinity-li.ng-enter-active{
+	transform: translateX(0);
+	-ms-transform: translateX(0);
+	-webkit-transform: translateX(0);
+	opacity: 1;
+}
+.infinity-li.ng-leave{
+	transform: translateX(0);
+	transition-duration: 1000ms;
+	opacity: 1;
+}
+.infinity-li.ng-leave-active{
+	transform: translateX(200px);
+	opacity: 0;
+}
+.infinity-a{
+	display: inline-block;
+	width:5.0rem;
+	height: 8.0rem;
+	position: relative;
+	top:0;
+	left:0;
+}
+.infinity-a-logo{
+	width:5.0rem;
+	height: 5.0rem;
+	color:#fff;
+	border-radius: 50%;
+	font-size: 2rem;
+	line-height: 5.0rem;
+	background-size: 5.0rem 5.0rem !important;
+}
+.infinity-a-wenzi{
+	width:5.0rem;
+	height: 1.0rem;
+	line-height: 1rem;
+	font-size: 0.6rem;
+	margin: 0.5rem 0 1.5rem 0;
+}
+.infinity-a:hover .infinity-a-logo{
+    animation: mythree 1s infinite;   
+}
+.infinity-a:hover .infinity-a-wenzi{
+    animation: myfour 1s infinite; 
+}
+.infinity-remove,.infinity-edit{
+	width:1.5rem;
+	height: 1.5rem;
+    border-radius: 30px;
+    position: absolute;
+	top:0px;
+    z-index: 9;
+    cursor: pointer;
+    background-image:url(../img/icon.png);
+    background-size: 3.0rem auto;
+}
+.infinity-remove{
+	left:3.5rem;
+	background-position: 0 -1.5rem;
+}
+.infinity-edit{
+	left:0;
+	background-color:rgba(255,255,255,0.5);
+	background-position: 0 -4.5rem;
+}
+.infinity-li-rotate{
+    animation: rotate 0.2s ease infinite;
+}
