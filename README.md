@@ -1,3 +1,3 @@
-### Angular Demo
+### Angular.js+Require.js+Gulp 构建
 
-* requireJs版本Demo地址: [Demo](http://leegsen7.cn:8080/angular)
+####  Demo地址: [Demo](http://leegsen7.cn:8080/angular)
