@@ -62,8 +62,8 @@ require.config({
 
 require([
 	'start',
-	'angular',
 	'background',
+  'angular',
 	'rightbar',
 	'music',
 	'service',
@@ -77,10 +77,10 @@ require([
 	'routeCtrl',
 	'musicCtrl',
 	'filter',
-	'route'],function(start,angular,background,rightbar,music){
+	'route'],function(start,background,angular,rightbar,music){
 	start.init();
+  background.init();
 	angular.bootstrap(document,['myApp']);
-	background.init();
 	rightbar.init();
 	music.init();
 });

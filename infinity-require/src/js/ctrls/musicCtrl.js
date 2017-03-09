@@ -51,7 +51,13 @@ define(function(require){
 	    promise.then(function(data){
 	    	$scope.musicList = storage.get('musicList') || data.musicList;
 		    // 默认第一首
-		    $scope.nowList = $scope.musicList[0];
+		    $scope.inter = $interval(function() {
+		    	if (document.readyState=="complete"){
+		    		$scope.nowList = $scope.musicList[0];
+		    		$interval.cancel($scope.inter);
+		    	}
+		    }, 100);
+		    
 	    })
 	    
 	    // 是否静音

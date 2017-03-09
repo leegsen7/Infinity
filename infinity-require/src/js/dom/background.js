@@ -8,15 +8,16 @@ define(function(){
 		}
 		var randomSrc = 'http://115.159.33.194/images/background/beijing'+num+'.png';
 		var img = new window.Image();
+		img.src = randomSrc;
 		img.onload = function(){
 			setTimeout(function(){
 				$('#backgroundImg').css({
 					'background-image':"url("+randomSrc+")",
 				});
 				$('#fengche').removeClass('fengche-rotate');
-			},500);
+			},200);
 		}
-		img.src = randomSrc;
+		
 	}	
 
 	var init = function(){

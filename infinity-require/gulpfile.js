@@ -28,7 +28,7 @@ gulp.task('clean',function(){
 gulp.task('browser-sync', function(){
     browserSync.init(files, {
         server: {
-            baseDir: "./"
+          baseDir: "./"
         }
     });
 });
@@ -131,7 +131,7 @@ gulp.task('watch',function(){
 
 // 定义默认任务
 gulp.task('default',function(){
-    gulp.start('buildcss','imagemin','watch');
+    gulp.start('buildcss','imagemin','watch',"browser-sync");
 });
 
 // 打包任务

@@ -46,7 +46,7 @@
 		<!-- 播放器 -->
 		<div class="bofangqi hiddened" id="bofangqi" ng-controller="musicCtrl" ng-init="flag1=true;selectList=1;flag2=true;">
 			<!-- 播放器 -->
-			<audio ng-src="{{sce('http://link.hhtjim.com/163/'+nowList.id+'.mp3')}}" id="audio" preload="preload"></audio>
+			<audio ng-src="{{sce(nowList.audio)}}" id="audio" preload="preload"></audio>
 			<!-- 控制面板开始 -->
 			<div class="m_player" role="application">
 			    <!-- 主面板开始 -->
@@ -307,6 +307,7 @@
 			</div>
 		</div>
 	</div>
+	<!-- <script src="./src/js/require.min.js" data-main="./src/js/main.js"></script> -->
 	<script src="./dist/js/require.min.js" data-main="./dist/js/main.js"></script>
 </body>
 </html>
