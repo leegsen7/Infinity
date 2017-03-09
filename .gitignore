@@ -1,4 +1,2 @@
-infinity-require/node_modules
-infinity-require/dist
-infinity-webpack
+node_modules/
 *.psd
